@@ -34,7 +34,8 @@ To make all this work more smoothly, this tool aims to delete the existing user 
 ## How
 Example using the rootless Docker image for Gitea:
 
-```docker
+[//]: # (https://github.com/microsoft/vscode/issues/95728#issuecomment-616782131)
+```dockerfile
 FROM gitea/gitea:1.16.5-linux-amd64-rootless
 
 #TODO: Download `userdef` here or get from previous build step...
