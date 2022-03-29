@@ -2,10 +2,10 @@
 
 version       = "0.1.0"
 author        = "Akito <the@akito.ooo>"
-description   = "A new awesome nimble nimpackage."
+description   = "Creates and sets up custom OS user of any ID for pre-made Docker images to increase Docker security."
 license       = "GPL-3.0-or-later"
 srcDir        = "src"
-bin           = @["nimpackage"]
+bin           = @["userdef"]
 skipDirs      = @["tasks"]
 skipFiles     = @["README.md"]
 skipExt       = @["nim"]
@@ -13,7 +13,7 @@ skipExt       = @["nim"]
 
 # Dependencies
 
-requires "nim >= 1.4.0"
+requires "nim >= 1.6.4"
 
 
 # Tasks
@@ -33,15 +33,15 @@ task fbuild, "Build project.":
   exec """nim c \
             --define:danger \
             --opt:speed \
-            --out:nimpackage \
-            src/nimpackage
+            --out:userdef \
+            src/userdef
        """
 task dbuild, "Debug Build project.":
   exec """nim c \
             --define:debug:true \
             --debuginfo:on \
-            --out:nimpackage \
-            src/nimpackage
+            --out:userdef_debug \
+            src/userdef
        """
 task makecfg, "Create nim.cfg for optimized builds.":
   exec "nim tasks/cfg_optimized.nims"
