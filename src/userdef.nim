@@ -26,38 +26,50 @@ var
   uid = invalidId
   gid = invalidId
 
+template optSetConfigPath() =
+  logger.log(lvlInfo, "Config path provided: " & val)
+  thisConfigPath = val
+  thisConfigPath.raiseIfNotExists
+
+proc raiseIfNotExists(filePath: string) =
+  if not filePath.fileExists:
+    raise OSError.newException("Path to config file provided is not a real file or cannot be found! Path to file provided: " & filePath)
+
 proc setOpts() =
   for kind, key, val in commandLineParams().getopt():
     case kind
       of cmdArgument:
-        discard
-        # try:
-        #   prok.pid = key.parseInt
-        # except ValueError:
-        #   prok.name = key
+        optSetConfigPath()
       of cmdLongOption, cmdShortOption:
         case key
           of "c", "config":
-            logger.log(lvlInfo, "Config path set: " & val)
-            thisConfigPath = val
+            optSetConfigPath()
           of "h", "home":
-            logger.log(lvlInfo, "User home set: " & val)
+            logger.log(lvlInfo, "User home provided: " & val)
             home = val
           of "n", "name":
-            logger.log(lvlInfo, "User Name set: " & val)
+            logger.log(lvlInfo, "User Name provided: " & val)
             name = val
           of "u", "uid":
-            logger.log(lvlInfo, "User ID set: " & val)
-            uid = val.parseInt
+            logger.log(lvlInfo, "User ID provided: " & val)
+            try:
+              uid = val.parseInt
+            except ValueError:
+              raise ValueError.newException("UID provided is not a valid number!")
           of "g", "gid":
-            logger.log(lvlInfo, "Group ID set: " & val)
-            gid = val.parseInt
+            logger.log(lvlInfo, "Group ID provided: " & val)
+            try:
+              gid = val.parseInt
+            except ValueError:
+              raise ValueError.newException("GID provided is not a valid number!")
       of cmdEnd: assert(false)
 
 proc run() =
   #[ Initialise configuration file. ]#
-  if commandLineParams().len < 3 and not initConf(thisConfigPath):
-    raise OSError.newException("Config file could neither be found nor generated! A config file is mandatory, if not all necessary user info is provided as arguments to this app.")
+  if commandLineParams().len < 3:
+    thisConfigPath.raiseIfNotExists
+    if not initConf(thisConfigPath):
+      raise OSError.newException("Config file could neither be found nor generated! A config file is mandatory, if not all necessary user info is provided as arguments to this app.")
   home = config.userdef.home.get("")
   name = config.userdef.name.get("")
   uid  = config.userdef.uid.get(invalidId)
