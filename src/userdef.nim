@@ -92,8 +92,10 @@ proc run() =
   passwdPath.writeFile(passwdContentClean.join(lineEnd))
   groupPath.writeFile(groupContentClean.join(lineEnd))
   if long:
+    logger.log(lvlDebug, "Adding user manually...")
     addUserMan(name, uid, gid, home, "")
   else:
+    logger.log(lvlDebug, "Adding user officially...")
     addUser(name, uid, gid, home, "")
   logger.log(lvlDebug, "Passwd File:\n" & passwdPath.readFile)
   logger.log(lvlDebug, "Group  File:\n" & groupPath.readFile)

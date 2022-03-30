@@ -13,6 +13,7 @@ import
 const pwPlaceholder = "x"
 
 let
+  logger = newConsoleLogger(defineLogLevel(), logMsgPrefix & logMsgInter & "usermanager" & logMsgSuffix)
   timestamp = now().toTime.toUnix div 60 div 60 div 24
 
 ## https://www.man7.org/linux/man-pages/man3/putpwent.3.html
