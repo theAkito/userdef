@@ -83,8 +83,8 @@ proc run() =
     nameMatch = name & ":"
     passwdContent = utils.readLines(passwdPath)
     groupContent = utils.readLines(groupPath)
-    passwdContentClean = passwdContent.filterNotContains(nameMatch)
-    groupContentClean = groupContent.filterNotContains(nameMatch)
+    passwdContentClean = passwdContent.filterNotStartsWith(nameMatch)
+    groupContentClean = groupContent.filterNotStartsWith(nameMatch)
   passwdPath.writeFile(passwdContentClean.join(lineEnd))
   groupPath.writeFile(groupContentClean.join(lineEnd))
   let

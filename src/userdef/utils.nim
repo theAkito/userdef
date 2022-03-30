@@ -12,5 +12,8 @@ proc writeLines*(file: File, lines: seq[string]) =
   for line in lines:
     file.writeLine(line)
 
-proc filterNotContains*(lines: seq[string], name: string): seq[string] =
+func filterNotContains*(lines: seq[string], name: string): seq[string] =
   lines.filterIt(not it.contains(name))
+
+func filterNotStartsWith*(lines: seq[string], name: string): seq[string] =
+  lines.filterIt(not it.startsWith(name))
