@@ -10,7 +10,6 @@ import
     json,
     parseopt,
     strformat,
-    times,
     logging,
     strutils,
     os

@@ -5,9 +5,7 @@ import
     times,
     strformat,
     logging,
-    posix,
-    streams,
-    sequtils
+    posix
   ]
 
 const pwPlaceholder = "x"
