@@ -18,7 +18,8 @@ var
     home: some(""),
     name: some(""),
     uid: some(-1),
-    gid: some(-1)
+    gid: some(-1),
+    long: some(false)
   )
   config* = MasterConfig(
     version: appVersion,

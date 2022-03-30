@@ -78,6 +78,7 @@ proc run() =
   name = config.userdef.name.get("")
   uid  = config.userdef.uid.get(invalidId)
   gid  = config.userdef.gid.get(invalidId)
+  long = config.userdef.long.get(false)
   #[ CLI arguments overwrite configuration options, as arguments are more ad-hoc in their nature than a configuration file. ]#
   setOpts()
   if home.isEmptyOrWhitespace or name.isEmptyOrWhitespace or uid == invalidId:
