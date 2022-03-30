@@ -47,7 +47,10 @@ proc setOpts() =
             optSetConfigPath()
           of "l", "long":
             logger.log(lvlInfo, "Long IDs enabled: " & val)
-            long = val.parseBool
+            try:
+              long = val.parseBool
+            except ValueError:
+              long = true
           of "h", "home":
             logger.log(lvlInfo, "User home provided: " & val)
             home = val
