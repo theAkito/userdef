@@ -2,7 +2,8 @@ import
   userdef/[
     meta,
     utils,
-    configurator
+    configurator,
+    usermanager
   ],
   std/[
     options,
@@ -17,10 +18,10 @@ import
 
 let
   logger = newConsoleLogger(defineLogLevel(), logMsgPrefix & logMsgInter & "master" & logMsgSuffix)
-  timestamp = now().toTime.toUnix div 60 div 60 div 24
   invalidId = -1
 var
   thisConfigPath = ""
+  long = false
   home = ""
   name = ""
   uid = invalidId
@@ -44,6 +45,9 @@ proc setOpts() =
         case key
           of "c", "config":
             optSetConfigPath()
+          of "l", "long":
+            logger.log(lvlInfo, "Long IDs enabled: " & val)
+            long = val.parseBool
           of "h", "home":
             logger.log(lvlInfo, "User home provided: " & val)
             home = val
@@ -87,20 +91,12 @@ proc run() =
     groupContentClean = groupContent.filterNotStartsWith(nameMatch)
   passwdPath.writeFile(passwdContentClean.join(lineEnd))
   groupPath.writeFile(groupContentClean.join(lineEnd))
-  let
-    passwdFile = passwdPath.open(mode = fmAppend)
-    groupFile = groupPath.open(mode = fmAppend)
-    passwdLines = @[
-      &"{name}:x:{uid}:{gid}::{home}:",
-      &"{name}:!:{timestamp}:0:99999:7:::"
-    ]
-    groupLines = @[
-      &"{name}:x:{gid}:{name}"
-    ]
-  passwdFile.writeLines(passwdLines)
-  groupFile.writeLines(groupLines)
-  passwdFile.close
-  groupFile.close
+  if long:
+    addUserMan(name, uid, gid, home, "")
+  else:
+    addUser(name, uid, gid, home, "")
+  logger.log(lvlDebug, "Passwd File:\n" & passwdPath.readFile)
+  logger.log(lvlDebug, "Group  File:\n" & groupPath.readFile)
 
 when isMainModule:
   logger.log(lvlNotice, "Starting with the following configuration:\n" & pretty(%* config))

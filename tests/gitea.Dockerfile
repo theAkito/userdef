@@ -10,7 +10,6 @@ RUN chmod +x /usr/local/bin/userdef
 # https://stackoverflow.com/a/66974607/7061105
 RUN apk add libc6-compat
 RUN /usr/local/bin/userdef -h=/var/lib/gitea/git -n=git -u=9234 -g=9234
-RUN set -x; cat /etc/passwd 1>&2
 RUN chown git:git -R /var/lib/gitea /etc/gitea
 
 USER ${UID}:${UID}
