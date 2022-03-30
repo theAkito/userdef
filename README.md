@@ -59,7 +59,7 @@ Docker containers running Docker images based on Linux.
 * Reliability
 
 ## Project Status
-Before Pre-Alpha. Unstable API of the configuration file.
+Beta. Works, but needs more testing and 3rd party feedback. --> Please help!
 
 ## TODO
 * ~~Make ID adjustable~~
