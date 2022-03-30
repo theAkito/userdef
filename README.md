@@ -62,9 +62,10 @@ Docker containers running Docker images based on Linux.
 Before Pre-Alpha. Unstable API of the configuration file.
 
 ## TODO
-* Make ID adjustable
-* Make Name adjustable
-* Read from config.json
+* ~~Make ID adjustable~~
+* ~~Make Name adjustable~~
+* ~~Read from config.json~~
+* ~~Support long and short IDs~~
 * Parse root Dockerfile and extract correct original user ID and user name
 
 ## License
