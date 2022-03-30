@@ -43,6 +43,8 @@ task dbuild, "Debug Build project.":
             --out:userdef_debug \
             src/userdef
        """
+task example, "Run example Docker build.":
+  exec "bash test_build-docker-gitea.sh"
 task makecfg, "Create nim.cfg for optimized builds.":
   exec "nim tasks/cfg_optimized.nims"
 task clean, "Removes nim.cfg.":
