@@ -13,14 +13,13 @@ const pwPlaceholder = "x"
 
 let
   logger = newConsoleLogger(defineLogLevel(), logMsgPrefix & logMsgInter & "usermanager" & logMsgSuffix)
-  timestamp = now().toTime.toUnix div 60 div 60 div 24
+  timestamp = now().toTime.toUnix div 60 div 60 div 24 ## https://stackoverflow.com/questions/1094291/get-current-date-in-epoch-from-unix-shell-script/1094354#1094354
 
-## https://linux.die.net/man/3/putpwent
-proc putpwent(p: ptr Passwd, stream: File): int {.importc, header: "<pwd.h>", sideEffect.}
-## https://linux.die.net/man/3/putgrent
-proc putgrent(grp: ptr Group, fp: File): int {.importc, header: "<grp.h>", sideEffect.}
+proc putpwent(p: ptr Passwd, stream: File): int {.importc, header: "<pwd.h>", sideEffect.} ## https://linux.die.net/man/3/putpwent
+proc putgrent(grp: ptr Group, fp: File): int {.importc, header: "<grp.h>", sideEffect.} ## https://linux.die.net/man/3/putgrent
 
 proc readPasswd(): seq[ptr Passwd] =
+  ## Reads all password entries from `/etc/passwd`.
   var currentPwEnt: ptr Passwd
   while true:
     currentPwEnt = getpwent()
@@ -28,41 +27,40 @@ proc readPasswd(): seq[ptr Passwd] =
     result.add currentPwEnt
   endpwent()
 
-proc addUser(entry: ptr Passwd): bool {.discardable.} =
+proc addUser(entry: ptr Passwd): bool =
   let passwdFile = passwdPath.open(mode = fmAppend)
   defer: passwdFile.close
   putpwent(entry, passwdFile) == 0
 
-proc addGroup(entry: ptr Group): bool {.discardable.} =
+proc addGroup(entry: ptr Group): bool =
   let grpFile = groupPath.open(mode = fmAppend)
   defer: grpFile.close
   putgrent(entry, grpFile) == 0
 
-proc addUser*(name: string, uid, gid: int, home, shell: string): bool {.discardable.} =
+proc addUser*(name: string, uid, gid: int, home: string, shell = "", pw = pwPlaceholder): bool {.discardable.} =
   ## Adds an OS user the official C API way.
   var
     realGid = gid.Gid
     passwd = Passwd(
       pw_name: name,
-      pw_passwd: pwPlaceholder,
+      pw_passwd: pw, # https://serverfault.com/questions/330069/how-to-create-an-sha-512-hashed-password-for-shadow
       pw_uid: uid.Uid,
       pw_gid: realGid,
-      pw_gecos: "",
+      pw_gecos: "", # https://www.redhat.com/sysadmin/linux-gecos-demystified
       pw_dir: home,
       pw_shell: shell
     )
     grpMembers = @[name].allocCStringArray
     grp = Group(
       gr_name: name,
-      gr_passwd: pwPlaceholder,
+      gr_passwd: pw,
       gr_gid: realGid,
       gr_mem: grpMembers
     )
   defer: grpMembers.deallocCStringArray
-  addUser(passwd.addr)
-  addGroup(grp.addr)
+  addUser(passwd.addr) and addGroup(grp.addr)
 
-proc addUserMan*(name: string, uid, gid: int, home, shell: string) =
+proc addUserMan*(name: string, uid, gid: int, home: string, shell = "", pw = pwPlaceholder) =
   ## Adds an OS user the manual way, by appending a user entry to `/etc/passwd`, `/etc/shadow` and
   ## a corresponding group entry to `/etc/group`.
   ##
@@ -83,13 +81,13 @@ proc addUserMan*(name: string, uid, gid: int, home, shell: string) =
     shadowFile = shadowPath.open(mode = fmAppend)
     groupFile = groupPath.open(mode = fmAppend)
     passwdLines = @[
-      &"{name}:{pwPlaceholder}:{uid}:{gid}::{home}:"
+      &"{name}:{pw}:{uid}:{gid}::{home}:"
     ]
     shadowLines = @[
       &"{name}:!:{timestamp}:0:99999:7:::"
     ]
     groupLines = @[
-      &"{name}:{pwPlaceholder}:{gid}:{name}"
+      &"{name}:{pw}:{gid}:{name}"
     ]
   defer: passwdFile.close
   defer: shadowFile.close
