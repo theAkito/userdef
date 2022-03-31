@@ -1,7 +1,6 @@
 import
   userdef/[
     meta,
-    utils,
     configurator,
     usermanager
   ],
@@ -10,14 +9,15 @@ import
     json,
     parseopt,
     strformat,
-    logging,
     strutils,
+    logging,
     os
   ]
 
-let
-  logger = newConsoleLogger(defineLogLevel(), logMsgPrefix & logMsgInter & "master" & logMsgSuffix)
-  invalidId = -1
+const invalidId = -1
+
+let logger = newConsoleLogger(defineLogLevel(), logMsgPrefix & logMsgInter & "master" & logMsgSuffix)
+
 var
   thisConfigPath = ""
   long = false
@@ -86,14 +86,7 @@ proc run() =
   if home.isEmptyOrWhitespace or name.isEmptyOrWhitespace or uid == invalidId:
     raise OSError.newException("Neither the configuration file nor the arguments provided were sufficient! You need to at least provide the custom user's home directory, name and UID!")
   if gid == invalidId: gid = uid
-  let
-    nameMatch = name & ":"
-    passwdContent = utils.readLines(passwdPath)
-    groupContent = utils.readLines(groupPath)
-    passwdContentClean = passwdContent.filterNotStartsWith(nameMatch)
-    groupContentClean = groupContent.filterNotStartsWith(nameMatch)
-  passwdPath.writeFile(passwdContentClean.join(lineEnd))
-  groupPath.writeFile(groupContentClean.join(lineEnd))
+  name.deleteUser()
   if long:
     logger.log(lvlDebug, "Adding user manually...")
     addUserMan(name, uid, gid, home, "")
