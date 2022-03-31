@@ -66,6 +66,10 @@ Beta. Works, but needs more testing and 3rd party feedback. --> Please help!
 * ~~Make Name adjustable~~
 * ~~Read from config.json~~
 * ~~Support long and short IDs~~
+* Add base Dockerfile
+* Add support for multi-arch Docker image
+* Add some kind of Continuous Delivery for binary in Docker image
+* Add meaningful examples
 * Parse root Dockerfile and extract correct original user ID and user name
 
 ## License
