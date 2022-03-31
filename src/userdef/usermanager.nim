@@ -63,8 +63,9 @@ proc addUser*(name: string, uid, gid: int, home, shell: string): bool {.discarda
   addGroup(grp.addr)
 
 proc addUserMan*(name: string, uid, gid: int, home, shell: string) =
-  ## Adds an OS user the manual way, by appending a user entry to `/etc/passwd` and
+  ## Adds an OS user the manual way, by appending a user entry to `/etc/passwd`, `/etc/shadow` and
   ## a corresponding group entry to `/etc/group`.
+  ##
   ## This manual method guarantees, that IDs consisting of numbers larger than
   ## 256000 are successfully applied, when creating a user.
   ## In Alpine's BusyBox version of `adduser` this is a general restriction,
@@ -79,27 +80,35 @@ proc addUserMan*(name: string, uid, gid: int, home, shell: string) =
   ## https://github.com/docksal/unison/pull/1#issuecomment-471114725
   let
     passwdFile = passwdPath.open(mode = fmAppend)
+    shadowFile = shadowPath.open(mode = fmAppend)
     groupFile = groupPath.open(mode = fmAppend)
     passwdLines = @[
-      &"{name}:{pwPlaceholder}:{uid}:{gid}::{home}:",
+      &"{name}:{pwPlaceholder}:{uid}:{gid}::{home}:"
+    ]
+    shadowLines = @[
       &"{name}:!:{timestamp}:0:99999:7:::"
     ]
     groupLines = @[
       &"{name}:{pwPlaceholder}:{gid}:{name}"
     ]
   defer: passwdFile.close
+  defer: shadowFile.close
   defer: groupFile.close
   passwdFile.writeLines(passwdLines)
+  shadowFile.writeLines(shadowLines)
   groupFile.writeLines(groupLines)
 
 proc deleteUser*(name: string) =
-  ## Deletes a user by manually deleting its entry from `/etc/passwd` and
+  ## Deletes a user by manually deleting its entry from `/etc/passwd`, `/etc/shadow` and
   ## a corresponding group entry from `/etc/group`.
   let
     nameMatch = name & ":"
     passwdContent = utils.readLines(passwdPath)
+    shadowContent = utils.readLines(shadowPath)
     groupContent = utils.readLines(groupPath)
     passwdContentClean = passwdContent.filterNotStartsWith(nameMatch)
+    shadowContentClean = shadowContent.filterNotStartsWith(nameMatch)
     groupContentClean = groupContent.filterNotStartsWith(nameMatch)
   passwdPath.writeFile(passwdContentClean.join(lineEnd))
+  shadowPath.writeFile(shadowContentClean.join(lineEnd))
   groupPath.writeFile(groupContentClean.join(lineEnd))

@@ -12,6 +12,7 @@ const
   configPath        * {.strdefine.}  = ""
   configIndentation * {.intdefine.}  = 2
   passwdPath        * {.strdefine.}  = "/etc/passwd"
+  shadowPath        * {.strdefine.}  = "/etc/shadow"
   groupPath         * {.strdefine.}  = "/etc/group"
 
 

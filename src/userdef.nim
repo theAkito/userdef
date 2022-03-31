@@ -94,6 +94,7 @@ proc run() =
     logger.log(lvlDebug, "Adding user officially...")
     addUser(name, uid, gid, home, "")
   logger.log(lvlDebug, "Passwd File:\n" & passwdPath.readFile)
+  logger.log(lvlDebug, "Shadow File:\n" & shadowPath.readFile)
   logger.log(lvlDebug, "Group  File:\n" & groupPath.readFile)
 
 when isMainModule:
