@@ -83,6 +83,7 @@ Beta. Works, but needs more testing and 3rd party feedback. --> Please help!
 * ~~Add support for multi-arch Docker image~~
 * ~~Add some kind of Continuous Delivery for binary in Docker image~~
 * ~~Add meaningful example in README~~
+* ~~Add libc based Docker images for binary provision (Alpine is musl based)~~
 * Add meaningful practical examples
 * Parse root Dockerfile and extract correct original user ID and user name
 
