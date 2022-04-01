@@ -28,6 +28,7 @@ fi
 docker \
   buildx \
   build \
+    --no-cache \
     --platform linux/amd64,linux/i386,linux/arm64,linux/arm/v7,linux/arm32v5,linux/arm32v6,linux/arm32v7,linux/arm64v8 \
     --tag "${tag}${tagSuffixDebug}" \
     --tag "$(printf '%s%s' "${tag%:*}" ":latest${tagSuffixDebug}")" \
