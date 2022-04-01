@@ -43,16 +43,27 @@ Example using the rootless Docker image for Gitea:
 
 [//]: # (https://github.com/microsoft/vscode/issues/95728#issuecomment-616782131)
 ```dockerfile
-FROM akito13/userdef:latest-debug AS base
+## Get the binary.
+## The default Docker Tag provides the Alpine (musl) based binary.
+FROM akito13/userdef AS base
+## Pull the image you want to modify the executing user of.
 FROM gitea/gitea:1.16.5-linux-amd64-rootless
 
+## We temporarily need to use the root user,
+## as we are doing administrative tasks, like e.g. modifying an OS user.
 USER root:root
-COPY --from=base /userdef /usr/local/bin/userdef
-RUN /usr/local/bin/userdef -h=/var/lib/gitea/git -n=git -u=9234 -g=9234
-RUN chown git:git -R /var/lib/gitea /etc/gitea
+COPY --from=base /userdef /userdef
+## 1. Change the existing user.
+## 2. Use that user to `chown` relevant folders.
+## 3. Remove the binary, because the user has been changed,
+##    i.e. our job is done here.
+RUN /userdef -h=/var/lib/gitea/git -n=git -u=9234 -g=9234 && \
+  chown git:git -R /var/lib/gitea /etc/gitea && \
+  rm -f /userdef
 
+## Switch to the now relevant executing user.
 USER 9234:9234
-# Taken from https://github.com/go-gitea/gitea/blob/66f2210feca0b50d305a46a203c2b3d2f4d3790b/Dockerfile.rootless#L71-L72
+## Taken from https://github.com/go-gitea/gitea/blob/66f2210feca0b50d305a46a203c2b3d2f4d3790b/Dockerfile.rootless#L71-L72
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD []
 ```
@@ -82,6 +93,7 @@ Beta. Works, but needs more testing and 3rd party feedback. --> Please help!
 * ~~Add some kind of Continuous Delivery for binary in Docker image~~
 * ~~Add meaningful example in README~~
 * ~~Add libc based Docker images for binary provision (Alpine is musl based)~~
+* Test with GID different from UID
 * Publish to Nimble
 * Add Github Release
 * Provide BUILD_VERSION, BUILD_REVISION, BUILD_DATE in Docker Release images
