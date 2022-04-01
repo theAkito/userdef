@@ -1,6 +1,7 @@
 FROM gitea/gitea:1.16.5-linux-amd64-rootless
 
 ARG UID
+LABEL testuserdef=true
 
 USER root:root
 COPY ../userdef_debug /usr/local/bin/userdef
