@@ -9,9 +9,12 @@
 [![Liberapay patrons](https://img.shields.io/liberapay/patrons/Akito?style=plastic)](https://liberapay.com/Akito/)
 
 ## What
-This tool creates a custom OS user with a custom ID inside pre-made Docker images, which perhaps already have a custom user defined and rebuilding the Docker image just to have your custom user in it is not an option.
+This tool is a more advanced `adduser` / `useradd` for your [Alpine](https://www.alpinelinux.org/) and [BusyBox](https://www.busybox.net/) based Docker images.
+
+For example, this tool may create a custom OS user with a custom ID inside pre-made Docker images, which perhaps already have a custom user defined and rebuilding the Docker image just to have your custom user in it is not an option.
 
 ## Why
+### Reason 1
 Now, more and more server apps try to go with the current meta of being available on Kubernetes, etc. This is a good idea, however it's often not well executed.
 Almost all of the popular server apps are not cloud-native. Their structure is still of some legacy kind.
 Examples are [Mattermost](https://mattermost.com/), [Gitea](https://gitea.io/en-us/), [Nextcloud](https://nextcloud.com/).
@@ -31,17 +34,26 @@ The hard-coded `1000` inside the image breaks usage of this `sshfs` mount, just 
 
 To make all this work more smoothly, this tool aims to delete the existing user in that Docker image and then recreate it with *your* custom user, which has an ID defined by *you*, instead of being forced to use the randomly chosen hard-coded user ID.
 
+### Reason 2
+
+You may just as well use this tool as a better `adduser` where the actual `adduser` or `useradd` (like the one in [Alpine](https://www.alpinelinux.org/)) have arbitrary and unnecessary restrictions, like for example [limiting the UID/GID size to 256000](https://stackoverflow.com/q/41807026/7061105).
+
 ## How
 Example using the rootless Docker image for Gitea:
 
 [//]: # (https://github.com/microsoft/vscode/issues/95728#issuecomment-616782131)
 ```dockerfile
+FROM akito13/userdef:latest-debug AS base
 FROM gitea/gitea:1.16.5-linux-amd64-rootless
 
-#TODO: Download `userdef` here or get from previous build step...
-COPY myuserconfig.json /
-RUN userdef myuserconfig.json
+USER root:root
+COPY --from=base /userdef /usr/local/bin/userdef
+# https://stackoverflow.com/a/66974607/7061105
+RUN apk add libc6-compat
+RUN /usr/local/bin/userdef -h=/var/lib/gitea/git -n=git -u=9234 -g=9234
+RUN chown git:git -R /var/lib/gitea /etc/gitea
 
+USER 9234:9234
 # Taken from https://github.com/go-gitea/gitea/blob/66f2210feca0b50d305a46a203c2b3d2f4d3790b/Dockerfile.rootless#L71-L72
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD []
@@ -69,8 +81,9 @@ Beta. Works, but needs more testing and 3rd party feedback. --> Please help!
 * ~~Support long and short IDs~~
 * ~~Add base Dockerfile~~
 * ~~Add support for multi-arch Docker image~~
-* Add some kind of Continuous Delivery for binary in Docker image
-* Add meaningful examples
+* ~~Add some kind of Continuous Delivery for binary in Docker image~~
+* ~~Add meaningful example in README~~
+* Add meaningful practical examples
 * Parse root Dockerfile and extract correct original user ID and user name
 
 ## License
