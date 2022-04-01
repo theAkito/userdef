@@ -122,8 +122,9 @@ Beta. Works, but needs more testing and 3rd party feedback. --> Please help!
 * ~~Add meaningful example in README~~
 * ~~Add libc based Docker images for binary provision (Alpine is musl based)~~
 * ~~Add CLI Usage Info to README~~
+* ~~Publish to Nimble~~
+* Add `nim.cfg` for optimised `nimble install` build
 * Test with GID different from UID
-* Publish to Nimble
 * Add Github Release
 * Provide BUILD_VERSION, BUILD_REVISION, BUILD_DATE in Docker Release images
 * Add meaningful practical examples

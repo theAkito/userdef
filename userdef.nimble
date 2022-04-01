@@ -2,7 +2,7 @@
 
 version       = "0.1.0"
 author        = "Akito <the@akito.ooo>"
-description   = "Creates and sets up custom OS user of any ID for pre-made Docker images to increase Docker security."
+description   = "A more advanced adduser for your Alpine based Docker images."
 license       = "GPL-3.0-or-later"
 srcDir        = "src"
 bin           = @["userdef"]
@@ -44,6 +44,8 @@ task dbuild, "Debug Build project.":
             --out:userdef_debug \
             src/userdef
        """
+task releaseDocker, "Deploy Docker image release.":
+  exec "bash docker-build.sh 0.1.0" #TODO: Make version number variable.
 task example, "Run example Docker build.":
   exec "bash test_build-docker-gitea.sh"
 task makecfg, "Create nim.cfg for optimized builds.":
