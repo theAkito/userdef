@@ -1,16 +1,13 @@
+FROM akito13/userdef:latest-debug AS base
 FROM gitea/gitea:1.16.5-linux-amd64-rootless
 
 ARG UID
 LABEL testuserdef=true
 
 USER root:root
-COPY ../userdef_debug /usr/local/bin/userdef
-RUN chmod +x /usr/local/bin/userdef
-# COPY myuserconfig.json /
-# RUN userdef myuserconfig.json
+COPY --from=base /userdef /usr/local/bin/userdef
 # https://stackoverflow.com/a/66974607/7061105
-RUN apk add libc6-compat
-RUN /usr/local/bin/userdef -h=/var/lib/gitea/git -n=git -u=9234 -g=9234
+RUN /usr/local/bin/userdef -h=/var/lib/gitea/git -n=git -u=${UID} -g=${UID}
 RUN chown git:git -R /var/lib/gitea /etc/gitea
 
 USER ${UID}:${UID}
