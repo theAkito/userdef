@@ -14,6 +14,9 @@ const
   passwdPath        * {.strdefine.}  = "/etc/passwd"
   shadowPath        * {.strdefine.}  = "/etc/shadow"
   groupPath         * {.strdefine.}  = "/etc/group"
+  sourcepage        * {.strdefine.}  = "https://github.com/theAkito/userdef"
+  homepage          * {.strdefine.}  = sourcepage
+  wikipage          * {.strdefine.}  = sourcepage
 
 
 func defineLogLevel*(): Level =
