@@ -84,6 +84,7 @@ Beta. Works, but needs more testing and 3rd party feedback. --> Please help!
 * ~~Add some kind of Continuous Delivery for binary in Docker image~~
 * ~~Add meaningful example in README~~
 * ~~Add libc based Docker images for binary provision (Alpine is musl based)~~
+* Provide BUILD_VERSION, BUILD_REVISION, BUILD_DATE in Docker Release images
 * Add meaningful practical examples
 * Parse root Dockerfile and extract correct original user ID and user name
 

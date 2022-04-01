@@ -1,4 +1,5 @@
 # ---> Vendored Files according to Linguist https://stackoverflow.com/a/26948938/7061105
 tests/gitea.Dockerfile linguist-vendored
 docker-build.sh linguist-vendored
+debug-docker-build.sh linguist-vendored
 test_build-docker-gitea.sh linguist-vendored
