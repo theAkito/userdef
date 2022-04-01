@@ -32,9 +32,10 @@ task configure, "Configure project. Run whenever you continue contributing to th
 task fbuild, "Build project.":
   exec """nim c \
             --define:danger \
-            --opt:speed \
+            --opt:size \
             --out:userdef \
-            src/userdef
+            src/userdef && \
+          strip userdef
        """
 task dbuild, "Debug Build project.":
   exec """nim c \
