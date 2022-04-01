@@ -70,8 +70,36 @@ CMD []
 
 This way, you get the behaviour of the original Docker image, but instead being forced to use the hard-coded user ID, you adjust the user inside the image to the one *you* specify.
 
-At first, only specifying the user ID will be supported, as this is the most important thing.
-The user name is not technically important, but could be important for maintenance and ease of user reasons.
+For a live example, run `nimble example`.
+
+### CLI Usage
+```
+Usage: userdef -n=<user-name> -u=<user-id> -h=<user-home> [-g=<user-group-id>] [-l | -l=[true|false]] [-c=<path-to-config-file> | <path-to-config-file>]
+
+Examples:
+  userdef --help
+  userdef -h=/var/lib/gitea/git -n=git -u=9234 -g=9234
+  userdef -h=/home/langlang -n=langlang -u=290111 -g=290111 --long
+  userdef -h=/overwrites/home/value/in/userdef.json -l=true /path/to/userdef.json
+
+Options:
+  -n, --name            Name of the user to modify or add.
+  -u, --uid             User ID.
+  -h, --home            Path to user's home.
+  -c, --config          (Optional) Provide path to configuration file.
+  -g, --gid             (Optional) Group ID. If empty, then GID will be same as UID.
+  -l, --long            (Optional) Whether long IDs (greater than 256000) are guaranteed to be supported.
+  -v, --version         App version information.
+  --help                This help text.
+
+Hints:
+  * If a user with the provided name already exists,
+    then it will be deleted and a new one will be created,
+    to replace the original one.
+
+  * Providing a configuration file works by using the `--config` option or
+    by providing the path without using any option.
+```
 
 ## Where
 Docker containers running Docker images based on Linux.
@@ -93,6 +121,7 @@ Beta. Works, but needs more testing and 3rd party feedback. --> Please help!
 * ~~Add some kind of Continuous Delivery for binary in Docker image~~
 * ~~Add meaningful example in README~~
 * ~~Add libc based Docker images for binary provision (Alpine is musl based)~~
+* ~~Add CLI Usage Info to README~~
 * Test with GID different from UID
 * Publish to Nimble
 * Add Github Release
