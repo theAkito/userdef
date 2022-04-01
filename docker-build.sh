@@ -50,6 +50,9 @@ debug_flag=false                                                                
 
 version="$1"
 tag="$2"
+platforms="linux/amd64,linux/i386,linux/arm64,linux/arm/v7,linux/arm32v5,linux/arm32v6,linux/arm32v7,linux/arm64v8"
+tagSuffixLibc="-libc"
+tagSuffixMusl="-musl"
 
 if [[ -z "${tag}" ]]; then
   tag="akito13/userdef:$1"
@@ -58,9 +61,21 @@ fi
 docker \
   buildx \
   build \
-    --platform linux/amd64,linux/i386,linux/arm64,linux/arm/v7,linux/arm32v5,linux/arm32v6,linux/arm32v7,linux/arm64v8 \
+    --platform "${platforms}" \
     --tag "${tag}" \
+    --tag "${tag}${tagSuffixMusl}" \
     --tag "$(printf '%s%s' "${tag%:*}" ":latest")" \
+    --tag "$(printf '%s%s' "${tag%:*}" ":latest${tagSuffixMusl}")" \
     --file Dockerfile \
+    --push \
+  .
+
+docker \
+  buildx \
+  build \
+    --platform "${platforms}" \
+    --tag "${tag}${tagSuffixLibc}" \
+    --tag "$(printf '%s%s' "${tag%:*}" ":latest${tagSuffixLibc}")" \
+    --file libc.Dockerfile \
     --push \
   .
