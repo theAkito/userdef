@@ -48,8 +48,6 @@ FROM gitea/gitea:1.16.5-linux-amd64-rootless
 
 USER root:root
 COPY --from=base /userdef /usr/local/bin/userdef
-# https://stackoverflow.com/a/66974607/7061105
-RUN apk add libc6-compat
 RUN /usr/local/bin/userdef -h=/var/lib/gitea/git -n=git -u=9234 -g=9234
 RUN chown git:git -R /var/lib/gitea /etc/gitea
 
@@ -84,6 +82,8 @@ Beta. Works, but needs more testing and 3rd party feedback. --> Please help!
 * ~~Add some kind of Continuous Delivery for binary in Docker image~~
 * ~~Add meaningful example in README~~
 * ~~Add libc based Docker images for binary provision (Alpine is musl based)~~
+* Publish to Nimble
+* Add Github Release
 * Provide BUILD_VERSION, BUILD_REVISION, BUILD_DATE in Docker Release images
 * Add meaningful practical examples
 * Parse root Dockerfile and extract correct original user ID and user name

@@ -6,7 +6,6 @@ LABEL testuserdef=true
 
 USER root:root
 COPY --from=base /userdef /usr/local/bin/userdef
-# https://stackoverflow.com/a/66974607/7061105
 RUN /usr/local/bin/userdef -h=/var/lib/gitea/git -n=git -u=${UID} -g=${UID}
 RUN chown git:git -R /var/lib/gitea /etc/gitea
 
