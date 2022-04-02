@@ -123,6 +123,7 @@ Beta. Works, but needs more testing and 3rd party feedback. --> Please help!
 * ~~Add libc based Docker images for binary provision (Alpine is musl based)~~
 * ~~Add CLI Usage Info to README~~
 * ~~Publish to Nimble~~
+* ~~Publish to [Awesome Docker](https://github.com/veggiemonk/awesome-docker)~~
 * Add `nim.cfg` for optimised `nimble install` build
 * Test with GID different from UID
 * Add Github Release
