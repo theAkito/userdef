@@ -74,7 +74,10 @@ For a live example, run `nimble example`.
 
 ### CLI Usage
 ```
-Usage: userdef -n=<user-name> -u=<user-id> -h=<user-home> [-g=<user-group-id>] [-l | -l=[true|false]] [-c=<path-to-config-file> | <path-to-config-file>]
+Usage:
+  userdef -n=<user-name> -u=<user-id> -h=<user-home>
+    [-g=<user-group-id>] [-l | -l=[true|false]]
+    [-c=<path-to-config-file> | <path-to-config-file>]
 
 Examples:
   userdef --help

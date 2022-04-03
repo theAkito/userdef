@@ -13,7 +13,10 @@ proc showHelp*() =
   echo "The more reliable `adduser`, which does not let you down!"
   echo &"Visit {homepage} for detailed information."
   echo()
-  echo "Usage: userdef -n=<user-name> -u=<user-id> -h=<user-home> [-g=<user-group-id>] [-l | -l=[true|false]] [-c=<path-to-config-file> | <path-to-config-file>]"
+  echo "Usage:"
+  echo "  userdef -n=<user-name> -u=<user-id> -h=<user-home>"
+  echo "          [-g=<user-group-id>] [-l | -l=[true|false]]"
+  echo "          [-c=<path-to-config-file> | <path-to-config-file>]"
   echo()
   echo "Examples:"
   echo "  userdef --help"
