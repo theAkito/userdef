@@ -41,3 +41,15 @@ proc showHelp*() =
   echo()
   echo "  * Providing a configuration file works by using the `--config` option or"
   echo "    by providing the path without using any option."
+  echo()
+  echo "  * You may replace the equal signs with colons when providing CLI arguments."
+  echo "    Example: userdef -h:/home/langlang -n:langlang -u:290111 -g:290111 --long"
+  echo()
+  echo "  * You also may replace the equal signs with nothing when providing CLI arguments."
+  echo "    Example: userdef -h/home/langlang -nlanglang -u290111 -g290111 --long"
+
+proc showVersion*() =
+  echo()
+  echo &"Build Version: {appVersion}"
+  echo &"Build Revision: {appVersion}"
+  echo &"Build Date: {appVersion}"
