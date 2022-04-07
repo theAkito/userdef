@@ -47,7 +47,8 @@ task dbuild, "Debug Build project.":
             src/userdef
        """
 task releaseDocker, "Deploy Docker image release.":
-  exec "bash docker-build.sh 0.1.0" #TODO: Make version number variable.
+  let version = params[^1]
+  exec "bash docker-build.sh {fresh}"
 task example, "Run example Docker build.":
   let fresh = params[^1]
   exec &"bash test_build-docker-gitea.sh {fresh}"
