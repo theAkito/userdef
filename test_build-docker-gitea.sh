@@ -17,6 +17,9 @@
 #########################################################################
 
 cwd="$(pwd)"
+fresh="$1"
+
+[[ -z "${fresh}" ]] && \
 fresh="false"
 
 [[ "${fresh}" == "true" ]] && { bash debug-docker-build.sh example || exit 1; }
