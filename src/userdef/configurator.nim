@@ -14,6 +14,7 @@ import
 let
   logger = newConsoleLogger(defineLogLevel(), logMsgPrefix & logMsgInter & "configurator" & logMsgSuffix)
 var
+  init = false
   userdef = UserDef(
     home: some(""),
     name: some(""),
@@ -42,15 +43,20 @@ proc genDefaultConfig(path = configPath, name = configName): JsonNode =
   conf
 
 proc initConf*(path = configPath, name = configName): bool =
+  if init:
+    logger.log(lvlDebug, "Config already initialised!")
+    return true
   let
     pathFull = path.genPathFull(name)
     configAlreadyExists = pathFull.fileExists
   if configAlreadyExists:
     logger.log(lvlDebug, "Config already exists! Not generating new one.")
     config = pathFull.parseFile().to(MasterConfig)
+    init = true
     return true
   try:
     genDefaultConfig(path, name)
   except:
     return false
+  init = true
   true
