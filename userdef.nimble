@@ -17,6 +17,8 @@ requires "nim >= 1.6.4"
 
 
 # Tasks
+import os, strformat
+let params = commandLineParams()
 
 task intro, "Initialize project. Run only once at first pull.":
   exec "git submodule add https://github.com/theAkito/nim-tools.git tasks || true"
@@ -47,7 +49,8 @@ task dbuild, "Debug Build project.":
 task releaseDocker, "Deploy Docker image release.":
   exec "bash docker-build.sh 0.1.0" #TODO: Make version number variable.
 task example, "Run example Docker build.":
-  exec "bash test_build-docker-gitea.sh"
+  let fresh = params[^1]
+  exec &"bash test_build-docker-gitea.sh {fresh}"
 task makecfg, "Create nim.cfg for optimized builds.":
   exec "nim tasks/cfg_optimized.nims"
 task clean, "Removes nim.cfg.":
