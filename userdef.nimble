@@ -46,9 +46,9 @@ task dbuild, "Debug Build project.":
             --out:userdef_debug \
             src/userdef
        """
-task releaseDocker, "Deploy Docker image release.":
+task releaseDocker, "Deploy Docker image release. Provide a Semver Version as the first argument to this task.":
   let version = params[^1]
-  exec "bash docker-build.sh {fresh}"
+  exec &"bash docker-build.sh {fresh}"
 task example, "Run example Docker build.":
   let fresh = params[^1]
   exec &"bash test_build-docker-gitea.sh {fresh}"
