@@ -32,7 +32,14 @@ task configure, "Configure project. Run whenever you continue contributing to th
   exec "nimble install --accept --depsOnly"
   exec "git status"
 task fbuild, "Build project.":
-  exec """nim c \
+  var version = if params.len > 0: params[^1] else: ""
+  if version.isEmptyOrWhitespace: version = "unreleased"
+  var revision = gorgeEx("""git log -1 --format="%H"""")[0]
+  var date = gorgeEx("""date""")[0]
+  exec &"""nim c \
+            --define:appVersion:{version} \
+            --define:appRevision:{revision} \
+            --define:appDate:"{date}" \
             --define:danger \
             --opt:size \
             --out:userdef \
@@ -46,7 +53,15 @@ task fbuild, "Build project.":
             --remove-section=.note.ABI-tag
        """
 task dbuild, "Debug Build project.":
-  exec """nim c \
+  var version = if params.len > 0: params[^1] else: ""
+  if version.isEmptyOrWhitespace: version = "unreleased"
+  var revision = gorgeEx("""git log -1 --format="%H"""")[0]
+  var date = gorgeEx("""date""")[0]
+  exec &"""nim c \
+            --define:appVersion:{version} \
+            --define:appRevision:{revision} \
+            --define:appDate:"{date}" \
+            --define:appVersion:{version} \
             --define:debug:true \
             --debuginfo:on \
             --out:userdef_debug \

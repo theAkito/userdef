@@ -20,6 +20,8 @@ var
   version = params[0]
   tagRoot = "akito13/userdef"
   tag = if params.len > 1: params[1] else: ""
+  revision = gorgeEx("""git log -1 --format="%H"""")[0]
+  date = gorgeEx("""date""")[0]
 
 if tag.isEmptyOrWhitespace:
   tag = tagRoot & tagVerPrefix & version
@@ -33,6 +35,9 @@ docker \
   build \
     --no-cache \
     --platform "{platforms}" \
+    --build-arg BUILD_VERSION={version} \
+    --build-arg BUILD_REVISION={revision} \
+    --build-arg BUILD_DATE="{date}" \
     --tag "{tag}{tagSuffixDebug}" \
     --tag "{tagRoot}{tagVerPrefix}{tagLatest}{tagSuffixDebug}" \
     --file debug.Dockerfile \

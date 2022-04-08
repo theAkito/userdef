@@ -41,6 +41,9 @@ proc run() =
     if params.contains("--help"):
       showHelp()
       quit(0)
+    if params.contains("-v") or params.contains("--version"):
+      showVersion()
+      quit(0)
     if params.len < 3:
       configPath.raiseIfNotExists
       if not initConf(args.configPath): #[ Initialise configuration file. ]#

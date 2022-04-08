@@ -8,6 +8,8 @@ const
   logMsgInter       * {.strdefine.}  = " ~ "
   logMsgSuffix      * {.strdefine.}  = " -> "
   appVersion        * {.strdefine.}  = "0.1.0"
+  appRevision       * {.strdefine.}  = appVersion
+  appDate           * {.strdefine.}  = appVersion
   configName        * {.strdefine.}  = "userdef.json"
   configPath        * {.strdefine.}  = ""
   configIndentation * {.intdefine.}  = 2

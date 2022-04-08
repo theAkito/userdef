@@ -50,6 +50,14 @@ proc showHelp*() =
 
 proc showVersion*() =
   echo()
-  echo &"Build Version: {appVersion}"
-  echo &"Build Revision: {appVersion}"
-  echo &"Build Date: {appVersion}"
+  echo "Build Version"
+  echo "============="
+  echo appVersion
+  echo()
+  echo &"Build Revision"
+  echo "==============="
+  echo appRevision
+  echo()
+  echo &"Build Date"
+  echo "==========="
+  echo appDate

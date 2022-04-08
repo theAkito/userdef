@@ -18,6 +18,8 @@ const
   tagMusl       = "musl"
   tagSuffixLibc = tagVerSuffix & tagLibc
   tagSuffixMusl = tagVerSuffix & tagMusl
+  revision = gorgeEx("""git log -1 --format="%H"""")[0]
+  date = gorgeEx("""date""")[0]
 
 var
   params = commandLineParams()[2..^1]
@@ -36,6 +38,9 @@ docker \
   buildx \
   build \
     --platform "{platforms}" \
+    --build-arg BUILD_VERSION={version} \
+    --build-arg BUILD_REVISION={revision} \
+    --build-arg BUILD_DATE="{date}" \
     --tag "{tag}" \
     --tag "{tag}{tagSuffixMusl}" \
     --tag "{tagRoot}{tagVerPrefix}{tagLatest}" \
@@ -53,6 +58,9 @@ docker \
   buildx \
   build \
     --platform "{platforms}" \
+    --build-arg BUILD_VERSION={version} \
+    --build-arg BUILD_REVISION={revision} \
+    --build-arg BUILD_DATE="{date}" \
     --tag "{tag}{tagSuffixLibc}" \
     --tag "{tagRoot}{tagVerPrefix}{tagLatest}{tagSuffixLibc}" \
     --tag "{tagRoot}{tagVerPrefix}{tagLibc}" \
