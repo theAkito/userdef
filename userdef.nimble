@@ -18,7 +18,7 @@ requires "nim >= 1.6.4"
 
 # Tasks
 import os, strformat, strutils
-let params = commandLineParams()[8..^1]
+let params = if paramCount() > 8: commandLineParams()[8..^1] else: @[]
 
 task intro, "Initialize project. Run only once at first pull.":
   exec "git submodule add https://github.com/theAkito/nim-tools.git tasks || true"
@@ -47,11 +47,11 @@ task dbuild, "Debug Build project.":
             src/userdef
        """
 task release_docker, "Deploy Docker image release. Provide a Semver Version as the first argument to this task.":
-  exec &"nim e docker_build.nims {params.join(\" \")}"
+  exec &"nim e tasks/docker_build.nims {params.join(\" \")}"
 task example, "Run example Docker build.":
   let fresh = params[^1]
-  exec &"bash test_build-docker-gitea.sh {fresh}"
+  exec &"nim e tests/test_build_docker_gitea.nims {fresh}"
 task makecfg, "Create nim.cfg for optimized builds.":
-  exec "nim tasks/cfg_optimized.nims"
+  exec "nim helpers/cfg_optimized.nims"
 task clean, "Removes nim.cfg.":
-  exec "nim tasks/cfg_clean.nims"
+  exec "nim helpers/cfg_clean.nims"
