@@ -37,7 +37,13 @@ task fbuild, "Build project.":
             --opt:size \
             --out:userdef \
             src/userdef && \
-          strip userdef
+          strip userdef \
+            --strip-all \
+            --remove-section=.comment \
+            --remove-section=.note.gnu.gold-version \
+            --remove-section=.note \
+            --remove-section=.note.gnu.build-id \
+            --remove-section=.note.ABI-tag
        """
 task dbuild, "Debug Build project.":
   exec """nim c \
@@ -51,7 +57,3 @@ task release_docker, "Deploy Docker image release. Provide a Semver Version as t
 task example, "Run example Docker build.":
   let fresh = params[^1]
   exec &"nim e tests/test_build_docker_gitea.nims {fresh}"
-task makecfg, "Create nim.cfg for optimized builds.":
-  exec "nim helpers/cfg_optimized.nims"
-task clean, "Removes nim.cfg.":
-  exec "nim helpers/cfg_clean.nims"
