@@ -22,6 +22,6 @@ fresh="$1"
 [[ -z "${fresh}" ]] && \
 fresh="false"
 
-[[ "${fresh}" == "true" ]] && { bash debug-docker-build.sh example || exit 1; }
+[[ "${fresh}" == "true" ]] && { bash tasks/debug-docker-build.sh example || exit 1; }
 docker build --no-cache --progress plain --build-arg UID=9234 -t test/gitea:1.16.5-linux-amd64-rootless -f tests/gitea.Dockerfile .
 docker image prune --force --all --filter "label=testuserdef"
