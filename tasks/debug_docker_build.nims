@@ -26,7 +26,7 @@ if tag.isEmptyOrWhitespace:
 else:
   tagRoot = tag.split(tagVerPrefix, 1)[0]
 
-## Build Musl Image
+## Build Debug Musl Image
 exec &"""
 docker \
   buildx \

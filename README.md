@@ -102,6 +102,12 @@ Hints:
 
   * Providing a configuration file works by using the `--config` option or
     by providing the path without using any option.
+
+  * You may replace the equal signs with colons when providing CLI arguments.
+    Example: userdef -h:/home/langlang -n:langlang -u:290111 -g:290111 --long
+
+  * You also may replace the equal signs with nothing when providing CLI arguments.
+    Example: userdef -h/home/langlang -nlanglang -u290111 -g290111 --long
 ```
 
 ## Where
@@ -112,7 +118,9 @@ You will need it most likely on BusyBox based images, like Alpine.
 * Reliability
 
 ## Project Status
-Beta. Works, but needs more testing and 3rd party feedback. --> Please help!
+Stable Beta.
+
+This app is well tested & works, but needs more testing and feedback from 3rd parties. --> Please help!
 
 ## TODO
 * ~~Make ID adjustable~~
