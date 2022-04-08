@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.1.0"
+version       = "0.2.0"
 author        = "Akito <the@akito.ooo>"
 description   = "A more advanced adduser for your Alpine based Docker images."
 license       = "GPL-3.0-or-later"
