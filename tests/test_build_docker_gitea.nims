@@ -6,7 +6,7 @@ from strutils import parseBool
 
 ## Whether to push a fresh app binary to be used in this example.
 let fresh = paramStr(paramCount()).parseBool
-if fresh: exec "bash tasks/debug-docker-build.sh example"
+if fresh: exec "nim e tasks/debug_docker_build.nims example"
 
 ## Build Docker Image Example.
 exec """
