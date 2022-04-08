@@ -136,7 +136,7 @@ This app is well tested & works, but needs more testing and feedback from 3rd pa
 * ~~Publish to Nimble~~
 * ~~Publish to [Awesome Docker](https://github.com/veggiemonk/awesome-docker)~~
 * ~~Use Nimscript instead of Bash for Build scripts~~
-* Add `nim.cfg` for optimised `nimble install` build
+* ~~Add `nim.cfg` for optimised `nimble install` build~~
 * Test with GID different from UID
 * Add Github Release
 * Provide BUILD_VERSION, BUILD_REVISION, BUILD_DATE in Docker Release images
