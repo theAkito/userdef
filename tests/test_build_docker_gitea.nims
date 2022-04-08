@@ -15,6 +15,7 @@ docker \
     --no-cache \
     --progress plain \
     --build-arg UID=9234 \
+    --build-arg GID=9432 \
     -t test/gitea:1.16.5-linux-amd64-rootless \
     -f tests/gitea.Dockerfile \
   .

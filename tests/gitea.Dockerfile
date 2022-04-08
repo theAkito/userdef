@@ -2,11 +2,12 @@ FROM akito13/userdef:latest-debug AS base
 FROM gitea/gitea:1.16.5-linux-amd64-rootless
 
 ARG UID
+ARG GID
 LABEL testuserdef=true
 
 USER root:root
 COPY --from=base /userdef /userdef
-RUN /userdef -h=/var/lib/gitea/git -n=git -u=${UID} -g=${UID} && \
+RUN /userdef -h=/var/lib/gitea/git -n=git -u=${UID} -g=${GID} && \
   chown git:git -R /var/lib/gitea /etc/gitea && \
   rm -f /userdef
 
