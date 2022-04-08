@@ -72,3 +72,5 @@ task release_docker, "Deploy Docker image release. Provide a Semver Version as t
 task example, "Run example Docker build.":
   let fresh = params[^1]
   exec &"nim e tests/test_build_docker_gitea.nims {fresh}"
+task test_version, "Test version display.":
+  exec "nimble dbuild && ./userdef_debug -v && nimble fbuild && ./userdef -v"
