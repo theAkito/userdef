@@ -21,7 +21,7 @@ LABEL org.opencontainers.image.created="${BUILD_DATE}"
 LABEL org.opencontainers.image.title="userdef"
 LABEL org.opencontainers.image.description="Creates and sets up custom OS user of any ID. Useful for BusyBox based images, like Alpine."
 LABEL org.opencontainers.image.url="https://hub.docker.com/r/akito13/userdef"
-LABEL org.opencontainers.image.documentation=""
+LABEL org.opencontainers.image.documentation="https://github.com/theAkito/userdef/wiki"
 LABEL org.opencontainers.image.source="https://github.com/theAkito/userdef"
 LABEL org.opencontainers.image.licenses="GPL-3.0+"
 
