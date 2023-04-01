@@ -3,7 +3,6 @@ import
     meta,
     utils,
     configurator,
-    usermanager,
     appinstructions,
     argument
   ],
@@ -15,6 +14,9 @@ import
     strutils,
     logging,
     os
+  ],
+  pkg/[
+    useradd
   ]
 
 let logger = newConsoleLogger(defineLogLevel(), logMsgPrefix & logMsgInter & "master" & logMsgSuffix)
@@ -61,17 +63,20 @@ proc run() =
     if args.home.isEmptyOrWhitespace or args.name.isEmptyOrWhitespace or args.uid == invalidId:
       raise OSError.newException("Neither the configuration file nor the arguments provided were sufficient! You need to at least provide the custom user's home directory, name and UID!")
     if args.gid == invalidId: args.gid = args.uid
-    args.name.deleteUser()
+    if not args.name.deleteUser():
+      raise OSError.newException "Failed to delete user!"
     if args.long:
       logger.log(lvlDebug, "Adding user manually...")
-      addUserMan(args.name, args.uid, args.gid, args.home)
+      if not addUserMan(args.name, args.uid, args.gid, args.home):
+        raise OSError.newException "Failed to add user manually!"
     else:
       logger.log(lvlDebug, "Adding user officially...")
-      addUser(args.name, args.uid, args.gid, args.home)
+      if not addUser(args.name, args.uid, args.gid, args.home):
+        raise OSError.newException "Failed to add user officially!"
     logger.log(lvlDebug, "Passwd File:\n" & passwdPath.readFile)
     logger.log(lvlDebug, "Shadow File:\n" & shadowPath.readFile)
     logger.log(lvlDebug, "Group  File:\n" & groupPath.readFile)
-  except:
+  except CatchableError:
     logger.log(lvlFatal, getCurrentExceptionMsg())
     showHelp()
 

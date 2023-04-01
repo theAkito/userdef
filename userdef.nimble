@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.2.0"
+version       = "0.3.0"
 author        = "Akito <the@akito.ooo>"
 description   = "A more advanced adduser for your Alpine based Docker images."
 license       = "GPL-3.0-or-later"
@@ -13,7 +13,8 @@ skipExt       = @["nim"]
 
 # Dependencies
 
-requires "nim >= 1.6.4"
+requires "nim     >= 1.6.4"
+requires "useradd >= 0.1.0"
 
 
 # Tasks
@@ -41,6 +42,7 @@ task fbuild, "Build project.":
             --define:appRevision:{revision} \
             --define:appDate:"{date}" \
             --define:danger \
+            --passL="-lcrypt" \
             --opt:size \
             --out:userdef \
             src/userdef && \
@@ -61,8 +63,8 @@ task dbuild, "Debug Build project.":
             --define:appVersion:{version} \
             --define:appRevision:{revision} \
             --define:appDate:"{date}" \
-            --define:appVersion:{version} \
             --define:debug:true \
+            --passL="-lcrypt" \
             --debuginfo:on \
             --out:userdef_debug \
             src/userdef

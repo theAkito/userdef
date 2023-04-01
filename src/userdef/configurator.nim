@@ -56,7 +56,7 @@ proc initConf*(path = configPath, name = configName): bool =
     return true
   try:
     genDefaultConfig(path, name)
-  except:
+  except CatchableError:
     return false
   init = true
   true

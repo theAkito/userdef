@@ -5,9 +5,6 @@ import
     sequtils
   ]
 
-proc readLines*(filePath: string): seq[string] =
-  filePath.readFile.splitLines
-
 proc writeLines*(file: File, lines: seq[string]) =
   for line in lines:
     file.writeLine(line)

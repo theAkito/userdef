@@ -4,7 +4,9 @@ COPY . /userdef
 
 WORKDIR /userdef
 
-RUN nimble fbuild
+RUN \
+  nimble install --accept --depsOnly && \
+  nimble fbuild
 
 FROM scratch
 
