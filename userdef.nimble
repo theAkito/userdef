@@ -36,7 +36,7 @@ task fbuild, "Build project.":
   var version = if params.len > 0: params[^1] else: ""
   if version.isEmptyOrWhitespace: version = "unreleased"
   var revision = gorgeEx("""git log -1 --format="%H"""")[0]
-  var date = gorgeEx("""date""")[0]
+  var date = gorgeEx("""date --iso-8601=seconds""")[0]
   exec &"""nim c \
             --define:appVersion:{version} \
             --define:appRevision:{revision} \
@@ -58,7 +58,7 @@ task dbuild, "Debug Build project.":
   var version = if params.len > 0: params[^1] else: ""
   if version.isEmptyOrWhitespace: version = "unreleased"
   var revision = gorgeEx("""git log -1 --format="%H"""")[0]
-  var date = gorgeEx("""date""")[0]
+  var date = gorgeEx("""date --iso-8601=seconds""")[0]
   exec &"""nim c \
             --define:appVersion:{version} \
             --define:appRevision:{revision} \
@@ -72,7 +72,7 @@ task dbuild, "Debug Build project.":
 task release_docker, "Deploy Docker image release. Provide a Semver Version as the first argument to this task.":
   exec &"nim e tasks/docker_build.nims {params.join(\" \")}"
 task example, "Run example Docker build.":
-  let fresh = params[^1]
+  let fresh = if params.len > 0: params[^1] else: "false"
   exec &"nim e tests/test_build_docker_gitea.nims {fresh}"
 task test_version, "Test version display.":
   exec "nimble dbuild && ./userdef_debug -v && nimble fbuild && ./userdef -v"

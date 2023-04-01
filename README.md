@@ -111,11 +111,6 @@ Hints:
 ```
 
 ### Alternative Sources
-This app is designed to be used inside containers. I do not recommend randomly using it on your every day Linux machine.
-For example, `/etc/passwd` is not locked when `userdef` is operating on it. In rare cases, this could corrupt the file, because other processes might use it, while `userdef` modifies it.
-
-If used inside a Docker container or when building a Docker image, there is no risk of corruption.
-
 
 >Last week i bought a chain saw with a twisted handle. Perhaps i wasn't careful, but by accident it chopped one of my arm off, then i thought to myself "gosh, this is POWERFUL!". [...]
 
@@ -131,7 +126,7 @@ nimble install userdef
 
 #### Installing the binary using [Github Releases](https://github.com/theAkito/userdef/releases):
 ```bash
-curl -fsSLo userdef https://github.com/theAkito/userdef/releases/download/0.2.0/userdef-github-0.2.0
+curl -fsSLo userdef https://github.com/theAkito/userdef/releases/download/0.3.0/userdef-github-0.3.0-linux-amd64
 chmod +x userdef
 mv userdef /usr/bin/userdef
 ```
@@ -172,11 +167,12 @@ This app is well tested & works, but needs more testing and feedback from 3rd pa
 * ~~Test with GID different from UID~~
 * ~~Provide BUILD_VERSION, BUILD_REVISION, BUILD_DATE in Docker Release images~~
 * ~~Add Github Release~~
+* ~~Use [nim-useradd](https://github.com/theAkito/nim-useradd) library for the backend~~
 * Add meaningful practical examples
 * Parse root Dockerfile and extract correct original user ID and user name
 
 ## License
-Copyright © 2022  Akito <the@akito.ooo>
+Copyright © 2022-2023  Akito <the@akito.ooo>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
