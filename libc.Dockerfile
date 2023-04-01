@@ -1,4 +1,4 @@
-FROM nimlang/nim:latest-ubuntu-onbuild AS build
+FROM nimlang/nim:ubuntu AS build
 
 COPY . /userdef
 
