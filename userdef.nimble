@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.4.0"
+version       = "0.5.0"
 author        = "Akito <the@akito.ooo>"
 description   = "A more advanced adduser for your Alpine based Docker images."
 license       = "GPL-3.0-or-later"
@@ -64,45 +64,6 @@ task dbuild, "Debug Build project.":
             --define:appRevision:{revision} \
             --define:appDate:"{date}" \
             --define:debug:true \
-            --passL="-lcrypt" \
-            --debuginfo:on \
-            --out:userdef_debug \
-            src/userdef
-       """
-task fbuild_alpine, "Build project for Alpine.":
-  var version = if params.len > 0: params[^1] else: ""
-  if version.isEmptyOrWhitespace: version = "unreleased"
-  var revision = gorgeEx("""git log -1 --format="%H"""")[0]
-  var date = if Alpine.detectOs: gorgeEx("""date""")[0] else: gorgeEx("""date --iso-8601=seconds""")[0]
-  exec &"""nim c \
-            --define:appVersion:{version} \
-            --define:appRevision:{revision} \
-            --define:appDate:"{date}" \
-            --define:danger \
-            --define:linuxAlpine:true \
-            --passL="-lcrypt" \
-            --opt:size \
-            --out:userdef \
-            src/userdef && \
-          strip userdef \
-            --strip-all \
-            --remove-section=.comment \
-            --remove-section=.note.gnu.gold-version \
-            --remove-section=.note \
-            --remove-section=.note.gnu.build-id \
-            --remove-section=.note.ABI-tag
-       """
-task dbuild_alpine, "Debug Build project for Alpine.":
-  var version = if params.len > 0: params[^1] else: ""
-  if version.isEmptyOrWhitespace: version = "unreleased"
-  var revision = gorgeEx("""git log -1 --format="%H"""")[0]
-  var date = if Alpine.detectOs: gorgeEx("""date""")[0] else: gorgeEx("""date --iso-8601=seconds""")[0]
-  exec &"""nim c \
-            --define:appVersion:{version} \
-            --define:appRevision:{revision} \
-            --define:appDate:"{date}" \
-            --define:debug:true \
-            --define:linuxAlpine:true \
             --passL="-lcrypt" \
             --debuginfo:on \
             --out:userdef_debug \

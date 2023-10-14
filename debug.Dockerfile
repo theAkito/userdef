@@ -6,7 +6,7 @@ WORKDIR /userdef
 
 RUN \
   nimble install --accept --depsOnly && \
-  nimble dbuild_alpine
+  nimble dbuild
 
 FROM scratch
 
