@@ -1,4 +1,4 @@
-FROM nimlang/nim:alpine AS build
+FROM akito13/nim:alpine AS build
 
 COPY . /userdef
 
@@ -6,7 +6,7 @@ WORKDIR /userdef
 
 RUN \
   nimble install --accept --depsOnly && \
-  nimble fbuild
+  nimble fbuild_alpine
 
 FROM scratch
 
