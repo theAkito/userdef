@@ -1,4 +1,4 @@
-FROM nimlang/nim:ubuntu AS build
+FROM akito13/nim:ubuntu AS build
 
 COPY . /userdef
 
