@@ -14,11 +14,11 @@ skipExt       = @["nim"]
 # Dependencies
 
 requires "nim     >= 1.6.4"
-requires "useradd >= 0.1.0"
+requires "useradd >= 0.3.0"
 
 
 # Tasks
-import os, strformat, strutils
+import os, strformat, strutils, distros
 let params = if paramCount() > 8: commandLineParams()[8..^1] else: @[]
 
 task intro, "Initialize project. Run only once at first pull.":
@@ -36,7 +36,7 @@ task fbuild, "Build project.":
   var version = if params.len > 0: params[^1] else: ""
   if version.isEmptyOrWhitespace: version = "unreleased"
   var revision = gorgeEx("""git log -1 --format="%H"""")[0]
-  var date = gorgeEx("""date --iso-8601=seconds""")[0]
+  var date = if Alpine.detectOs: gorgeEx("""date""")[0] else: gorgeEx("""date --iso-8601=seconds""")[0]
   exec &"""nim c \
             --define:appVersion:{version} \
             --define:appRevision:{revision} \
@@ -58,12 +58,51 @@ task dbuild, "Debug Build project.":
   var version = if params.len > 0: params[^1] else: ""
   if version.isEmptyOrWhitespace: version = "unreleased"
   var revision = gorgeEx("""git log -1 --format="%H"""")[0]
-  var date = gorgeEx("""date --iso-8601=seconds""")[0]
+  var date = if Alpine.detectOs: gorgeEx("""date""")[0] else: gorgeEx("""date --iso-8601=seconds""")[0]
   exec &"""nim c \
             --define:appVersion:{version} \
             --define:appRevision:{revision} \
             --define:appDate:"{date}" \
             --define:debug:true \
+            --passL="-lcrypt" \
+            --debuginfo:on \
+            --out:userdef_debug \
+            src/userdef
+       """
+task fbuild_alpine, "Build project for Alpine.":
+  var version = if params.len > 0: params[^1] else: ""
+  if version.isEmptyOrWhitespace: version = "unreleased"
+  var revision = gorgeEx("""git log -1 --format="%H"""")[0]
+  var date = if Alpine.detectOs: gorgeEx("""date""")[0] else: gorgeEx("""date --iso-8601=seconds""")[0]
+  exec &"""nim c \
+            --define:appVersion:{version} \
+            --define:appRevision:{revision} \
+            --define:appDate:"{date}" \
+            --define:danger \
+            --define:linuxAlpine:true \
+            --passL="-lcrypt" \
+            --opt:size \
+            --out:userdef \
+            src/userdef && \
+          strip userdef \
+            --strip-all \
+            --remove-section=.comment \
+            --remove-section=.note.gnu.gold-version \
+            --remove-section=.note \
+            --remove-section=.note.gnu.build-id \
+            --remove-section=.note.ABI-tag
+       """
+task dbuild_alpine, "Debug Build project for Alpine.":
+  var version = if params.len > 0: params[^1] else: ""
+  if version.isEmptyOrWhitespace: version = "unreleased"
+  var revision = gorgeEx("""git log -1 --format="%H"""")[0]
+  var date = if Alpine.detectOs: gorgeEx("""date""")[0] else: gorgeEx("""date --iso-8601=seconds""")[0]
+  exec &"""nim c \
+            --define:appVersion:{version} \
+            --define:appRevision:{revision} \
+            --define:appDate:"{date}" \
+            --define:debug:true \
+            --define:linuxAlpine:true \
             --passL="-lcrypt" \
             --debuginfo:on \
             --out:userdef_debug \
